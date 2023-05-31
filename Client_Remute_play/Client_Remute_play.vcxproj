@@ -83,6 +83,7 @@
     <Link>
       <AdditionalDependencies>User32.lib;</AdditionalDependencies>
       <SubSystem>Windows</SubSystem>
+      <EntryPointSymbol>main</EntryPointSymbol>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
