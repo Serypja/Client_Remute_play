@@ -128,26 +128,69 @@ namespace ClientRemuteplay {
 			IPEndPoint^ endPoint = gcnew IPEndPoint(serverAddress, 8884);
 			int maxPacketSize = 65507; // максимальный размер пакета UDP
 
+			// Задание таймаута на прием пакетов
+			client->Client->ReceiveTimeout = 5000; // таймаут в миллисекундах
+
 			// Создание буфера для хранения принятых данных
 			List<Byte>^ receivedData = gcnew List<Byte>();
-			
 
-			// Прием пакетов и добавление данных в буферв
+			// Прием пакетов и добавление данных в буфер
 			while (true)
 			{
-				array<Byte>^ packetData = client->Receive(endPoint);
-				receivedData->AddRange(packetData);
+				array<Byte>^ packetData = gcnew array<Byte>(maxPacketSize);
+				try
+				{
+					packetData = client->Receive(endPoint);
+					receivedData->AddRange(packetData);
 
-				// Если приняты все пакеты, выход из цикла
-				if (packetData->Length < maxPacketSize)
+					// Если приняты все пакеты, выход из цикла
+					if (packetData->Length < maxPacketSize)
+						break;
+				}
+				catch (SocketException^ ex)
+				{
+					Console::WriteLine("Ошибка при приеме пакета: {0}", ex->Message);
 					break;
+				}
 			}
 
 			// Преобразование списка байтов в массив байтов
 			array<Byte>^ pngData = receivedData->ToArray();
 
 			// Сохранение принятых данных в файл
-			System::IO::File::WriteAllBytes("image.png", pngData);
+			System::IO::File::WriteAllBytes("received_image.png", pngData);
+
+
+			//______________________________________-передача картинки маленького размера, до 200МБ
+
+			//// Создание объекта UdpClient для прослушивания входящих пакетов
+			//UdpClient^ client = gcnew UdpClient(8884);
+			//IPAddress^ serverAddress = IPAddress::Parse("192.168.0.149");
+			//IPEndPoint^ endPoint = gcnew IPEndPoint(serverAddress, 8884);
+			//int maxPacketSize = 65507; // максимальный размер пакета UDP
+
+			//// Создание буфера для хранения принятых данных
+			//List<Byte>^ receivedData = gcnew List<Byte>();
+			//
+
+			////Прием пакетов и добавление данных в буферв
+			//while (true)
+			//{
+			//	array<Byte>^ packetData = client->Receive(endPoint);
+			//	receivedData->AddRange(packetData);
+
+			//	// Если приняты все пакеты, выход из цикла
+			//	if (packetData->Length < maxPacketSize)
+			//		break;
+			//}
+
+			//
+
+			//// Преобразование списка байтов в массив байтов
+			//array<Byte>^ pngData = receivedData->ToArray();
+
+			//// Сохранение принятых данных в файл
+			//System::IO::File::WriteAllBytes("image.png", pngData);
 
 			
 			
