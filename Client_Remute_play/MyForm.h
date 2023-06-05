@@ -132,7 +132,7 @@ namespace ClientRemuteplay {
 			List<Byte>^ receivedData = gcnew List<Byte>();
 			
 
-			// Прием пакетов и добавление данных в буфер
+			// Прием пакетов и добавление данных в буферв
 			while (true)
 			{
 				array<Byte>^ packetData = client->Receive(endPoint);
