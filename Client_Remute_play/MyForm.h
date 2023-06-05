@@ -100,27 +100,9 @@ namespace ClientRemuteplay {
 #pragma endregion
 	private: System::Void button1_Click(System::Object^ sender, System::EventArgs^ e) {
 
-		String^ ipAddressString = "192.168.0.190";
-		IPAddress^ ipAddress = IPAddress::Parse(ipAddressString);
-		int port = 3322;
+		
 
-		// Создаем UDP клиент на порту 1234
-		UdpClient^ udpClient = gcnew UdpClient(port);
-		udpClient->Client->Bind(gcnew IPEndPoint(ipAddress, port));
 
-		// Получаем массив байт от сервера
-		IPEndPoint^ remoteEP = gcnew IPEndPoint(ipAddress, port);
-		array<Byte>^ receivedBytes = udpClient->Receive(remoteEP);
-
-		// Создаем Bitmap из массива байт
-		MemoryStream^ stream = gcnew MemoryStream(receivedBytes);
-		Image^ image = Image::FromStream(stream);
-		Bitmap^ bitmap = gcnew Bitmap(image);
-
-		// Используем Bitmap по своему усмотрению
-		// ...
-		pictureBox1->Image = bitmap;
-		pictureBox1->SizeMode = PictureBoxSizeMode::Zoom;
 	}
 	};
 }
