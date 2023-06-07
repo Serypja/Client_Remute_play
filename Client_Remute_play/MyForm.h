@@ -195,6 +195,32 @@ namespace ClientRemuteplay {
 			   // Передача файлов по TCP
 		private: System::Void button2_Click(System::Object^ sender, System::EventArgs^ e) {
 
+			// Создаем TCP-сервер и начинаем прослушивание входящих соединений
+			TcpListener^ server = gcnew TcpListener(IPAddress::Any, 8888);
+			server->Start();
+
+			// Принимаем входящее соединение
+			TcpClient^ client = server->AcceptTcpClient();
+
+			// Получаем сетевой поток для чтения данных
+			NetworkStream^ stream = client->GetStream();
+
+			// Считываем размер изображения
+			array<Byte>^ sizeBytes = gcnew array<Byte>(sizeof(int));
+			stream->Read(sizeBytes, 0, sizeBytes->Length);
+			int imageSize = BitConverter::ToInt32(sizeBytes, 0);
+
+			// Считываем данные изображения
+			array<Byte>^ imageBytes = gcnew array<Byte>(imageSize);
+			stream->Read(imageBytes, 0, imageSize);
+
+			// Сохраняем данные изображения в файл
+			File::WriteAllBytes("imageResult.png", imageBytes);
+
+			// Закрываем соединение
+			stream->Close();
+			client->Close();
+			server->Stop();
 
 		}
 
