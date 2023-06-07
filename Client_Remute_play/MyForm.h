@@ -52,6 +52,8 @@ namespace ClientRemuteplay {
 	private: System::Windows::Forms::Button^ button1;
 	private: System::Windows::Forms::PictureBox^ pictureBox1;
 	private: System::Windows::Forms::Label^ label1;
+	private: System::Windows::Forms::Button^ button2;
+	private: System::Windows::Forms::Button^ button3;
 	protected:
 
 	private:
@@ -70,16 +72,18 @@ namespace ClientRemuteplay {
 			this->button1 = (gcnew System::Windows::Forms::Button());
 			this->pictureBox1 = (gcnew System::Windows::Forms::PictureBox());
 			this->label1 = (gcnew System::Windows::Forms::Label());
+			this->button2 = (gcnew System::Windows::Forms::Button());
+			this->button3 = (gcnew System::Windows::Forms::Button());
 			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->pictureBox1))->BeginInit();
 			this->SuspendLayout();
 			// 
 			// button1
 			// 
-			this->button1->Font = (gcnew System::Drawing::Font(L"Microsoft Sans Serif", 16, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point,
+			this->button1->Font = (gcnew System::Drawing::Font(L"Microsoft Sans Serif", 12, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point,
 				static_cast<System::Byte>(204)));
 			this->button1->Location = System::Drawing::Point(12, 12);
 			this->button1->Name = L"button1";
-			this->button1->Size = System::Drawing::Size(194, 84);
+			this->button1->Size = System::Drawing::Size(188, 48);
 			this->button1->TabIndex = 0;
 			this->button1->Text = L"Подключиться UDP";
 			this->button1->UseVisualStyleBackColor = true;
@@ -102,11 +106,37 @@ namespace ClientRemuteplay {
 			this->label1->TabIndex = 2;
 			this->label1->Text = L"label1";
 			// 
+			// button2
+			// 
+			this->button2->Font = (gcnew System::Drawing::Font(L"Microsoft Sans Serif", 12, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point,
+				static_cast<System::Byte>(204)));
+			this->button2->Location = System::Drawing::Point(12, 66);
+			this->button2->Name = L"button2";
+			this->button2->Size = System::Drawing::Size(188, 48);
+			this->button2->TabIndex = 3;
+			this->button2->Text = L"Подключиться TCP";
+			this->button2->UseVisualStyleBackColor = true;
+			this->button2->Click += gcnew System::EventHandler(this, &MyForm::button2_Click);
+			// 
+			// button3
+			// 
+			this->button3->Font = (gcnew System::Drawing::Font(L"Microsoft Sans Serif", 12, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point,
+				static_cast<System::Byte>(204)));
+			this->button3->Location = System::Drawing::Point(12, 120);
+			this->button3->Name = L"button3";
+			this->button3->Size = System::Drawing::Size(188, 48);
+			this->button3->TabIndex = 4;
+			this->button3->Text = L"Подключиться FASP";
+			this->button3->UseVisualStyleBackColor = true;
+			this->button3->Click += gcnew System::EventHandler(this, &MyForm::button3_Click);
+			// 
 			// MyForm
 			// 
 			this->AutoScaleDimensions = System::Drawing::SizeF(6, 13);
 			this->AutoScaleMode = System::Windows::Forms::AutoScaleMode::Font;
 			this->ClientSize = System::Drawing::Size(788, 399);
+			this->Controls->Add(this->button3);
+			this->Controls->Add(this->button2);
 			this->Controls->Add(this->label1);
 			this->Controls->Add(this->pictureBox1);
 			this->Controls->Add(this->button1);
@@ -118,7 +148,7 @@ namespace ClientRemuteplay {
 
 		}
 #pragma endregion
-		
+		// передача файлов по UDP
 		private: System::Void button1_Click(System::Object^ sender, System::EventArgs^ e) {
 
 
@@ -160,44 +190,25 @@ namespace ClientRemuteplay {
 			// Сохранение принятых данных в файл
 			System::IO::File::WriteAllBytes("received_image.png", pngData);
 
-
-			//______________________________________-передача картинки маленького размера, до 200МБ
-
-			//// Создание объекта UdpClient для прослушивания входящих пакетов
-			//UdpClient^ client = gcnew UdpClient(8884);
-			//IPAddress^ serverAddress = IPAddress::Parse("192.168.0.149");
-			//IPEndPoint^ endPoint = gcnew IPEndPoint(serverAddress, 8884);
-			//int maxPacketSize = 65507; // максимальный размер пакета UDP
-
-			//// Создание буфера для хранения принятых данных
-			//List<Byte>^ receivedData = gcnew List<Byte>();
-			//
-
-			////Прием пакетов и добавление данных в буферв
-			//while (true)
-			//{
-			//	array<Byte>^ packetData = client->Receive(endPoint);
-			//	receivedData->AddRange(packetData);
-
-			//	// Если приняты все пакеты, выход из цикла
-			//	if (packetData->Length < maxPacketSize)
-			//		break;
-			//}
-
-			//
-
-			//// Преобразование списка байтов в массив байтов
-			//array<Byte>^ pngData = receivedData->ToArray();
-
-			//// Сохранение принятых данных в файл
-			//System::IO::File::WriteAllBytes("image.png", pngData);
-
-			
-			
-		
 		}
-	};
+
+			   // Передача файлов по TCP
+		private: System::Void button2_Click(System::Object^ sender, System::EventArgs^ e) {
+
+
+		}
+
+			   // Передача данных по FASP
+		private: System::Void button3_Click(System::Object^ sender, System::EventArgs^ e) {
+
+
+
+		}
+};
 }
+
+
+
 
 //______________________________________________Передача картинки до 64 МБ
 //// Создаем UDP сервер
@@ -215,3 +226,39 @@ namespace ClientRemuteplay {
 
 //// Закрываем сервер
 //server->Close();
+
+
+
+
+
+
+//______________________________________-передача картинки маленького размера, до 200МБ
+
+//// Создание объекта UdpClient для прослушивания входящих пакетов
+//UdpClient^ client = gcnew UdpClient(8884);
+//IPAddress^ serverAddress = IPAddress::Parse("192.168.0.149");
+//IPEndPoint^ endPoint = gcnew IPEndPoint(serverAddress, 8884);
+//int maxPacketSize = 65507; // максимальный размер пакета UDP
+
+//// Создание буфера для хранения принятых данных
+//List<Byte>^ receivedData = gcnew List<Byte>();
+//
+
+////Прием пакетов и добавление данных в буферв
+//while (true)
+//{
+//	array<Byte>^ packetData = client->Receive(endPoint);
+//	receivedData->AddRange(packetData);
+
+//	// Если приняты все пакеты, выход из цикла
+//	if (packetData->Length < maxPacketSize)
+//		break;
+//}
+
+//
+
+//// Преобразование списка байтов в массив байтов
+//array<Byte>^ pngData = receivedData->ToArray();
+
+//// Сохранение принятых данных в файл
+//System::IO::File::WriteAllBytes("image.png", pngData);
